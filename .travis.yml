@@ -1,8 +1,16 @@
 language: c
+
 compiler:
   - clang
   - gcc
+
 script:
-  - make
+  - clang --coverage ntpdatehttp.c -lcurl -o ntpdatehttp
+  - ./ntpdatehttp
+  - gcov ntpdatehttp.c
+  - gcc --coverage ntpdatehttp.c -lcurl -o ntpdatehttp
+  - ./ntpdatehttp
+  - gcov ntpdatehttp.c
+  
 after_success:
     bash <(curl -s https://codecov.io/bash)
