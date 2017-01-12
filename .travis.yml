@@ -3,6 +3,6 @@ compiler:
   - clang
   - gcc
 script:
-    make
+  - make
 after_success:
     bash <(curl -s https://codecov.io/bash)
