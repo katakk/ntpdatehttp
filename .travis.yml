@@ -4,6 +4,23 @@ compiler:
   - clang
   - gcc
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "OaGAmC/aCq45HG5CPwm6XxUQ3QRFTHUc7KbfnaoqvyWc31AUlLuTbHRAiCd2l6p1LYvv3FQiuQMuhy4CAWsguD++eQZm7pq6mNdT9WlZpUmahqfwnINuL4NZqkJMYRVJfu6CIX3mkEwYzqwfIgsoHXuYPI4DDkhjFmqkJ8s/k10V2tjNZ7Y73ZVqJHpi6u/sTt8UB8egO4hdrdpNcvvUlLlvFeFyHA8O8LsfIesTU1kNQAUlqXAT3drIZZKeRgGao/Bxhc3EDnEoAlMwSMZQR3xm54C6u4TprhqPdBVmSRqmjUYyJjAsjPME46tBjJdNy/CVedDrcYrnuYnWQpAD3W3LYdOpY2MBQOFHm/hnOs6SpIrsSz6AV4IQyui5rJBRZ0UKto/l5Y3ZvwjjXsAj+7HouhrGDhNXO3KqhKnoPCSFh9YGJDUNjrUTPT8mjLOBvoQCzcRKXZ+jJhUOY4/vXj8hcLY23GwZhd3ZR+TvYnZaO4Q9zMN7QrIx5yk3utWRyBX22s6UDlNHY8J4ijQWFHkJ4RYSTyXxhjAyuWCcpIuABC9qDFh/h0msqqtWXi/fdK/wzcrgXarx07SQox8lo0dOcXOAen8ZBAS51TtcaHjZmLu9SIJTvkaHgwgQ+ny2gvwXGRTMZb8lcQITF+r/82Hdwl1iwnv6KI9T2Lbl6bA="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "katakk/ntpdatehttp"
+      description: "Build submitted via Travis CI"
+    build_command:   "make"
+    branch_pattern: master
+
 script:
   - clang --coverage ntpdatehttp.c -lcurl -o ntpdatehttp
   - gcov ntpdatehttp.c
