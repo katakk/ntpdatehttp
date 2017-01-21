@@ -27,5 +27,10 @@ script:
   - gcc --coverage ntpdatehttp.c -lcurl -o ntpdatehttp
   - gcov ntpdatehttp.c
   
+notifications:
+  email:
+    on_success: never
+    on_failure: never
+
 after_success:
-    bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
